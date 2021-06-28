@@ -27,24 +27,28 @@ def bookDoctor():
     for i in range(len(time)):
         print(i," -- ",time[i])        
     btime=int(input("enter time number  :"))
-    booktime=time[btime]
+    try:
+        booktime=time[btime]
 
-    doctor=db.search(query.name==name)
-    if len(doctor)==1:
-        doctor=doctor[0]
-        if booktime in doctor['bookings']:
-            print("time was already booked  try again!!!")
-            bookDoctor()
+        doctor=db.search(query.name==name)
+        if len(doctor)==1:
+            doctor=doctor[0]
+            if booktime in doctor['bookings']:
+                print("time was already booked  try again!!!")
+                bookDoctor()
+            else:
+                doctor['bookings'].append(booktime)
+                db.update(doctor)
+                print("succesfully booked !!!")
         else:
-           doctor['bookings'].append(booktime)
-           db.update(doctor)
-           print("succesfully booked !!!")
-    else:
-        print("no such doctor in the system ")
+            print("no such doctor in the system ")
         
+    except:
+        print("found an error")
+  
     
-if __name__"__main__":
-    x=input("choose \n 1 to register doctor \n 2. to do bookings")
+if __name__=="__main__":
+    x=int(input("choose \n 1 to register doctor \n 2. to do bookings \n "))
     if x==1:
         registerDoctor()
     elif x==2:
